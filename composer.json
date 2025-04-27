@@ -1,0 +1,14 @@
+{
+    "name": "tesis/geo-little-paws-api",
+    "description": "api para app en flutter",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "juan"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
