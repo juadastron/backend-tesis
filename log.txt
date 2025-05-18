@@ -1,0 +1,51 @@
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 3
+}
+
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 3
+}
+
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 3
+}
+
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {"id_dispositivo":3}
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 3
+}
+
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 4
+}
+
+?? Intentando eliminar ID: 4
+? Resultado: OK
+?? Entró al DELETE
+?? Body recibido: {
+  "id_dispositivo": 3
+}
+
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {"id_dispositivo":3}
+?? Intentando eliminar ID: 3
+?? Entró al DELETE
+?? Body recibido: {"id_dispositivo":3}
+?? Intentando eliminar ID: 3
+? Resultado: OK
+?? Entró al DELETE
+?? Body recibido: {"id_dispositivo":4}
+?? Intentando eliminar ID: 4
+? Resultado: OK

@@ -1,0 +1,84 @@
+PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException Object
+(
+    [connectionErrorCode:PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException:private] => 10061
+    [connectionErrorMessage:PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException:private] => No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+    [message:protected] => [1000] Establishing a connection to the MQTT broker failed: Socket error [10061]: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+    [string:Exception:private] => 
+    [code:protected] => 1000
+    [file:protected] => C:\xampp\htdocs\geo_little_paws_api\vendor\php-mqtt\client\src\MqttClient.php
+    [line:protected] => 226
+    [trace:Exception:private] => Array
+        (
+            [0] => Array
+                (
+                    [file] => C:\xampp\htdocs\geo_little_paws_api\vendor\php-mqtt\client\src\MqttClient.php
+                    [line] => 134
+                    [function] => establishSocketConnection
+                    [class] => PhpMqtt\Client\MqttClient
+                    [type] => ->
+                    [args] => Array
+                        (
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [file] => C:\xampp\htdocs\geo_little_paws_api\vendor\php-mqtt\client\src\MqttClient.php
+                    [line] => 123
+                    [function] => connectInternal
+                    [class] => PhpMqtt\Client\MqttClient
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => 1
+                        )
+
+                )
+
+            [2] => Array
+                (
+                    [file] => C:\xampp\htdocs\geo_little_paws_api\enviar_config.php
+                    [line] => 27
+                    [function] => connect
+                    [class] => PhpMqtt\Client\MqttClient
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => PhpMqtt\Client\ConnectionSettings Object
+                                (
+                                    [username:PhpMqtt\Client\ConnectionSettings:private] => tu_usuario
+                                    [password:PhpMqtt\Client\ConnectionSettings:private] => 7kilometrosporta
+                                    [useBlockingSocket:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [connectTimeout:PhpMqtt\Client\ConnectionSettings:private] => 60
+                                    [socketTimeout:PhpMqtt\Client\ConnectionSettings:private] => 5
+                                    [resendTimeout:PhpMqtt\Client\ConnectionSettings:private] => 10
+                                    [keepAliveInterval:PhpMqtt\Client\ConnectionSettings:private] => 10
+                                    [reconnectAutomatically:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [maxReconnectAttempts:PhpMqtt\Client\ConnectionSettings:private] => 3
+                                    [delayBetweenReconnectAttempts:PhpMqtt\Client\ConnectionSettings:private] => 0
+                                    [lastWillTopic:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [lastWillMessage:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [lastWillQualityOfService:PhpMqtt\Client\ConnectionSettings:private] => 0
+                                    [lastWillRetain:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [useTls:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsVerifyPeer:PhpMqtt\Client\ConnectionSettings:private] => 1
+                                    [tlsVerifyPeerName:PhpMqtt\Client\ConnectionSettings:private] => 1
+                                    [tlsSelfSignedAllowed:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsCertificateAuthorityFile:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsCertificateAuthorityPath:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsClientCertificateFile:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsClientCertificateKeyFile:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsClientCertificateKeyPassphrase:PhpMqtt\Client\ConnectionSettings:private] => 
+                                    [tlsAlpn:PhpMqtt\Client\ConnectionSettings:private] => 
+                                )
+
+                            [1] => 1
+                        )
+
+                )
+
+        )
+
+    [previous:Exception:private] => 
+)
