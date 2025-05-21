@@ -49,3 +49,18 @@
 ?? Body recibido: {"id_dispositivo":4}
 ?? Intentando eliminar ID: 4
 ? Resultado: OK
+?? Entr� al DELETE
+?? Body recibido: {"id_dispositivo":5}
+?? Intentando eliminar ID: 5
+?? Entr� al DELETE
+?? Body recibido: {"id_dispositivo":5}
+?? Intentando eliminar ID: 5
+? Resultado: OK
+?? Entr� al DELETE
+?? Body recibido: {"id_dispositivo":4}
+?? Intentando eliminar ID: 4
+? Resultado: OK
+?? Entr� al DELETE
+?? Body recibido: {"id_dispositivo":3}
+?? Intentando eliminar ID: 3
+? Resultado: OK

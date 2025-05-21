@@ -11,16 +11,13 @@ class AsignacionController {
     public function manejarRequest($method) {
         switch ($method) {
             case 'GET':
-                if (!isset($_GET['id_animal'])) {
-                    http_response_code(400);
-                    echo json_encode(["success" => false, "message" => "ID de animal requerido"]);
-                    return;
-                }
-                $asignacion = $this->modelo->obtenerAsignacionActiva($_GET['id_animal']);
-                echo json_encode($asignacion ?: null);
-                break;
-
-            case 'POST':
+    if (isset($_GET['id_dispositivo'])) {
+        $asignaciones = $this->modelo->obtenerHistorialPorDispositivo($_GET['id_dispositivo']);
+        echo json_encode(["success" => true, "asignaciones" => $asignaciones]);
+    } else {
+        echo json_encode(["success" => false, "message" => "ID requerido"]);
+    }
+    break;            case 'POST':
                 $data = json_decode(file_get_contents("php://input"));
                 if (!isset($data->id_animal, $data->id_dispositivo)) {
                     http_response_code(400);
@@ -35,7 +32,7 @@ class AsignacionController {
                 $data = json_decode(file_get_contents("php://input"));
                 if (!isset($data->id_asignacion)) {
                     http_response_code(400);
-                    echo json_encode(["success" => false, "message" => "ID de asignaciÃ³n requerido"]);
+                    echo json_encode(["success" => false, "message" => "ID de asignación requerido"]);
                     return;
                 }
                 $ok = $this->modelo->desvincularDispositivo($data->id_asignacion);
@@ -44,7 +41,7 @@ class AsignacionController {
 
             default:
                 http_response_code(405);
-                echo json_encode(["success" => false, "message" => "MÃ©todo no permitido"]);
+                echo json_encode(["success" => false, "message" => "Método no permitido"]);
         }
     }
 }

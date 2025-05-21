@@ -12,30 +12,40 @@ class DispositivoController {
     public function manejarRequest($method) {
         switch ($method) {
             case 'GET':
+                if (isset($_GET['permiso_edicion'], $_GET['id_usuario'], $_GET['id_dispositivo'])) {
+                    $puede = $this->modelo->usuarioPuedeEditar($_GET['id_usuario'], $_GET['id_dispositivo']);
+                    echo json_encode(["puede_editar" => $puede]);
+                    return;
+                }
                 $datos = $this->modelo->obtenerTodosConAsignacion();
                 echo json_encode($datos);
                 break;
-
             case 'POST':
                 $data = json_decode(file_get_contents("php://input"));
+                
                 if (!isset($data->imei, $data->estado_actual)) {
                     http_response_code(400);
                     echo json_encode(["success" => false, "message" => "Faltan datos"]);
                     return;
                 }
-                $data->numero_celular = $data->numero_celular ?? null;
-                $id = $this->modelo->crear($data);
 
-                if ($id !== false) {
-                   echo json_encode([
-                       "success" => true,
-                       "id_dispositivo" => $id,
-                       "imei" => $data->imei
-                   ]);
+                $data->numero_celular = $data->numero_celular ?? null;
+
+                $idDispositivo = $this->modelo->crear($data); // âœ… Solo una vez
+
+                if ($idDispositivo && isset($data->id_usuario)) {
+                    $this->modelo->asignarUsuarioADispositivo($data->id_usuario, $idDispositivo);
+                }
+                if ($idDispositivo !== false) {
+                    echo json_encode([
+                        "success" => true,
+                        "id_dispositivo" => $idDispositivo,
+                        "imei" => $data->imei
+                    ]);
                 } else {
                     echo json_encode([
-                       "success" => false,
-                       "message" => "Error al crear dispositivo"
+                        "success" => false,
+                        "message" => "Error al crear dispositivo"
                     ]);
                 }
                 break;
@@ -53,14 +63,14 @@ class DispositivoController {
                 break;
 
             case 'DELETE':
-    file_put_contents("log.txt", "?? Entró al DELETE\n", FILE_APPEND);
+    file_put_contents("log.txt", "?? Entrï¿½ al DELETE\n", FILE_APPEND);
 
     $input = file_get_contents("php://input");
     file_put_contents("log.txt", "?? Body recibido: $input\n", FILE_APPEND);
 
     if (empty($input)) {
-        file_put_contents("log.txt", "? JSON vacío\n", FILE_APPEND);
-        echo json_encode(["success" => false, "message" => "JSON vacío"]);
+        file_put_contents("log.txt", "? JSON vacï¿½o\n", FILE_APPEND);
+        echo json_encode(["success" => false, "message" => "JSON vacï¿½o"]);
         return;
     }
 

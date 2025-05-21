@@ -26,7 +26,7 @@ class UsuarioModel {
 }
 
     public function crear($data) {
-    // Verificar si el email ya está registrado
+    // Verificar si el email ya estï¿½ registrado
     if ($this->buscarPorEmail($data->email)) {
         return "correo_existente";
     }
@@ -64,4 +64,12 @@ public function correoYaEnUsoPorOtro($email, $idUsuarioActual) {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function actualizarTokenFcm($idUsuario, $tokenFcm) {
+    $stmt = $this->conn->prepare("UPDATE usuarios SET token_fcm = ? WHERE id_usuario = ?");
+    $stmt->bind_param("si", $tokenFcm, $idUsuario);
+    $stmt->execute();
+    return $stmt->affected_rows > 0;
+}
+
 }

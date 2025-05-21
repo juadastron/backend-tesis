@@ -37,4 +37,20 @@ class UbicacionModel {
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+
+public function obtenerRecorridoUltimoDia($idDispositivo) {
+    $query = "
+        SELECT latitud, longitud, timestamp
+        FROM ubicaciones
+        WHERE id_dispositivo = ?
+        AND timestamp >= NOW() - INTERVAL 1 DAY
+        ORDER BY timestamp ASC
+    ";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bind_param("i", $idDispositivo);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
 }

@@ -7,17 +7,17 @@ class AsignacionModel {
     }
 
     public function asignarDispositivo($id_animal, $id_dispositivo) {
-        // Verificar si ya estÃ¡ asignado
+        // Verificar si ya está asignado
         $check = $this->conn->prepare("SELECT id_asignacion FROM asignaciones_animal_dispositivo WHERE id_dispositivo = ? AND fecha_fin IS NULL");
         $check->bind_param("i", $id_dispositivo);
         $check->execute();
         $checkResult = $check->get_result();
 
         if ($checkResult->num_rows > 0) {
-            return ["success" => false, "message" => "El dispositivo ya estÃ¡ asignado"];
+            return ["success" => false, "message" => "El dispositivo ya está asignado"];
         }
 
-        // Insertar asignaciÃ³n
+        // Insertar asignación
         $stmt = $this->conn->prepare("
             INSERT INTO asignaciones_animal_dispositivo (id_animal, id_dispositivo, fecha_inicio)
             VALUES (?, ?, NOW())
@@ -44,7 +44,7 @@ class AsignacionModel {
         if (!$res || !$res->num_rows) return false;
         $row = $res->fetch_assoc();
 
-        // Cerrar asignaciÃ³n
+        // Cerrar asignación
         $stmt = $this->conn->prepare("UPDATE asignaciones_animal_dispositivo SET fecha_fin = NOW() WHERE id_asignacion = ?");
         $stmt->bind_param("i", $id_asignacion);
         $ok = $stmt->execute();
@@ -70,4 +70,23 @@ class AsignacionModel {
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
+
+public function obtenerHistorialPorDispositivo($id_dispositivo) {
+    $stmt = $this->conn->prepare("
+        SELECT 
+            a.id_asignacion, 
+            a.id_animal, 
+            ani.nombre AS nombre_animal, 
+            ani.especie AS especie_animal, 
+            a.fecha_inicio, 
+            a.fecha_fin
+        FROM asignaciones_animal_dispositivo a
+        INNER JOIN animales ani ON a.id_animal = ani.id_animal
+        WHERE a.id_dispositivo = ?
+        ORDER BY a.fecha_inicio DESC
+    ");
+    $stmt->bind_param("i", $id_dispositivo);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
 }

@@ -19,25 +19,34 @@ class UsuarioController {
                 break;
 
             case 'POST':
-		$data = json_decode(file_get_contents("php://input"));
-    		if (!isset($data->nombre, $data->email, $data->password, $data->rol)) {
-      		  http_response_code(400);
-       		 echo json_encode(["success" => false, "message" => "Faltan datos"]);
-       		 return;
-    		}
+				$data = json_decode(file_get_contents("php://input"));
 
-   		$resultado = $this->modelo->crear($data);
+				// ✅ Si solo quiere actualizar token_fcm
+				if (isset($data->id_usuario, $data->token_fcm)) {
+					$ok = $this->modelo->actualizarTokenFcm($data->id_usuario, $data->token_fcm);
+					echo json_encode(["success" => $ok]);
+					return;
+				}
 
-    		if ($resultado === true) {
-       			echo json_encode(["success" => true, "message" => "Usuario creado"]);
-    		} elseif ($resultado === "correo_existente") {
-       			 http_response_code(409); // Conflicto
-       			 echo json_encode(["success" => false, "message" => "Correo ya est� en uso"]);
-   		 } else {
-        		http_response_code(500);
-        		echo json_encode(["success" => false, "message" => "Error al crear usuario"]);
-   		 }
-   		 break;
+				// ✅ Crear usuario (lógica existente)
+				if (!isset($data->nombre, $data->email, $data->password, $data->rol)) {
+					http_response_code(400);
+					echo json_encode(["success" => false, "message" => "Faltan datos"]);
+					return;
+				}
+
+				$resultado = $this->modelo->crear($data);
+
+				if ($resultado === true) {
+					echo json_encode(["success" => true, "message" => "Usuario creado"]);
+				} elseif ($resultado === "correo_existente") {
+					http_response_code(409);
+					echo json_encode(["success" => false, "message" => "Correo ya está en uso"]);
+				} else {
+					http_response_code(500);
+					echo json_encode(["success" => false, "message" => "Error al crear usuario"]);
+				}
+				break;
             case 'PUT':
    		 $data = json_decode(file_get_contents("php://input"));
     		 if (!isset($data->id_usuario, $data->nombre, $data->email, $data->rol)) {
@@ -52,7 +61,7 @@ class UsuarioController {
         		echo json_encode(["success" => true, "message" => "Usuario actualizado"]);
     		} elseif ($resultado === "correo_existente") {
         		http_response_code(409);
-        		echo json_encode(["success" => false, "message" => "Correo ya est� en uso por otro usuario"]);
+        		echo json_encode(["success" => false, "message" => "Correo ya est� en uso por otro usuario"]);
     		} else {
         		http_response_code(500);
         		echo json_encode(["success" => false, "message" => "Error al actualizar usuario"]);

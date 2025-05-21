@@ -9,24 +9,40 @@ class UbicacionController {
     }
 
     public function manejarRequest($method) {
-        switch ($method) {
-            case 'GET':
-                $asignados = $this->modelo->obtenerDispositivosAsignados();
-                $ubicaciones = [];
-
-                foreach ($asignados as $d) {
-                    $ultimaUbicacion = $this->modelo->obtenerUltimaUbicacion($d['id_dispositivo']);
-                    if ($ultimaUbicacion) {
-                        $ubicaciones[] = array_merge($d, $ultimaUbicacion);
-                    }
-                }
-
+    switch ($method) {
+        case 'GET':
+            if (isset($_GET['id_dispositivo']) && isset($_GET['recorrido'])) {
+                $id = intval($_GET['id_dispositivo']);
+                $recorrido = $this->modelo->obtenerRecorridoUltimoDia($id);
                 echo json_encode([
                     "success" => true,
-                    "dispositivos" => $ubicaciones
+                    "recorrido" => $recorrido
                 ]);
-                break;
+                return;
+            }
 
+            $asignados = $this->modelo->obtenerDispositivosAsignados();
+            $ubicaciones = [];
+
+            foreach ($asignados as $d) {
+                $ultimaUbicacion = $this->modelo->obtenerUltimaUbicacion($d['id_dispositivo']);
+                if ($ultimaUbicacion) {
+                    $ubicaciones[] = array_merge($d, $ultimaUbicacion);
+                }
+            }
+
+            echo json_encode([
+                "success" => true,
+                "dispositivos" => $ubicaciones
+            ]);
+            break;
+
+            http_response_code(405);
+            echo json_encode([
+                "success" => false,
+                "message" => "Método no permitido"
+            ]);
+            break;
             default:
                 http_response_code(405);
                 echo json_encode([
