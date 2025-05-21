@@ -49,7 +49,7 @@ class AsignacionController {
                 $data = json_decode(file_get_contents("php://input"));
                 if (!isset($data->id_asignacion)) {
                     http_response_code(400);
-                    echo json_encode(["success" => false, "message" => "ID de asignación requerido"]);
+                    echo json_encode(["success" => false, "message" => "ID de asignaci�n requerido"]);
                     return;
                 }
                 $ok = $this->modelo->desvincularDispositivo($data->id_asignacion);
@@ -61,7 +61,7 @@ class AsignacionController {
 
             default:
                 http_response_code(405);
-                echo json_encode(["success" => false, "message" => "Método no permitido"]);
+                echo json_encode(["success" => false, "message" => "M�todo no permitido"]);
         }
     }
 }
