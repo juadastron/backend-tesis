@@ -7,17 +7,17 @@ class AsignacionModel {
     }
 
     public function asignarDispositivo($id_animal, $id_dispositivo) {
-        // Verificar si ya est· asignado
+        // Verificar si ya estÔøΩ asignado
         $check = $this->conn->prepare("SELECT id_asignacion FROM asignaciones_animal_dispositivo WHERE id_dispositivo = ? AND fecha_fin IS NULL");
         $check->bind_param("i", $id_dispositivo);
         $check->execute();
         $checkResult = $check->get_result();
 
         if ($checkResult->num_rows > 0) {
-            return ["success" => false, "message" => "El dispositivo ya est· asignado"];
+            return ["success" => false, "message" => "El dispositivo ya esta asignado"];
         }
 
-        // Insertar asignaciÛn
+        // Insertar asignaciÔøΩn
         $stmt = $this->conn->prepare("
             INSERT INTO asignaciones_animal_dispositivo (id_animal, id_dispositivo, fecha_inicio)
             VALUES (?, ?, NOW())
@@ -44,7 +44,7 @@ class AsignacionModel {
         if (!$res || !$res->num_rows) return false;
         $row = $res->fetch_assoc();
 
-        // Cerrar asignaciÛn
+        // Cerrar asignaciÔøΩn
         $stmt = $this->conn->prepare("UPDATE asignaciones_animal_dispositivo SET fecha_fin = NOW() WHERE id_asignacion = ?");
         $stmt->bind_param("i", $id_asignacion);
         $ok = $stmt->execute();
@@ -68,7 +68,12 @@ class AsignacionModel {
         ");
         $stmt->bind_param("i", $id_animal);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        $result = $stmt->get_result();
+if ($result && $result->num_rows > 0) {
+    return $result->fetch_assoc();
+} else {
+    return ["id_asignacion" => null]; // ‚ö†Ô∏è Estructura consistente para evitar null
+}
     }
 
 public function obtenerHistorialPorDispositivo($id_dispositivo) {
