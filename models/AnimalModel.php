@@ -7,9 +7,13 @@ class AnimalModel {
     }
 
     public function obtenerTodos() {
-        $result = $this->conn->query("SELECT * FROM animales");
-        return $result->fetch_all(MYSQLI_ASSOC);
+    $result = $this->conn->query("SELECT * FROM animales");
+    if (!$result) {
+        error_log("Error en SELECT animales: " . $this->conn->error);
+        return [];
     }
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 
     public function obtenerPorId($id) {
         $stmt = $this->conn->prepare("SELECT * FROM animales WHERE id_animal = ?");
@@ -30,9 +34,22 @@ class AnimalModel {
         return $stmt->execute();
     }
 
+    public function tieneAsignacionActiva($id_animal) {
+    $stmt = $this->conn->prepare("SELECT id_asignacion FROM asignaciones_animal_dispositivo WHERE id_animal = ? AND fecha_fin IS NULL");
+    $stmt->bind_param("i", $id_animal);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    return $res->num_rows > 0;
+}
     public function eliminar($id) {
-        $stmt = $this->conn->prepare("DELETE FROM animales WHERE id_animal = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
-    }
+    // Eliminar primero las asignaciones relacionadas
+    $stmt1 = $this->conn->prepare("DELETE FROM asignaciones_animal_dispositivo WHERE id_animal = ?");
+    $stmt1->bind_param("i", $id);
+    $stmt1->execute();
+
+    // Luego eliminar el animal
+    $stmt2 = $this->conn->prepare("DELETE FROM animales WHERE id_animal = ?");
+    $stmt2->bind_param("i", $id);
+    return $stmt2->execute();
+}
 }
