@@ -12,15 +12,24 @@ class DispositivoController {
     public function manejarRequest($method) {
         switch ($method) {
             case 'GET':
-                if (isset($_GET['permiso_edicion'], $_GET['id_usuario'], $_GET['id_dispositivo'])) {
-                    $puede = $this->modelo->usuarioPuedeEditar($_GET['id_usuario'], $_GET['id_dispositivo']);
-                    echo json_encode(["puede_editar" => $puede]);
-                    return;
-                }
-                $datos = $this->modelo->obtenerTodosConAsignacion();
-                echo json_encode($datos);
-                break;
-            case 'POST':
+    // ?? Verificar si está pidiendo solo los dispositivos disponibles
+    if (isset($_GET['disponibles'])) {
+        $datos = $this->modelo->obtenerDisponibles(); // <- método en el modelo
+        echo json_encode($datos);
+        return;
+    }
+
+    // ? Verificación de permisos (ya lo tienes)
+    if (isset($_GET['permiso_edicion'], $_GET['id_usuario'], $_GET['id_dispositivo'])) {
+        $puede = $this->modelo->usuarioPuedeEditar($_GET['id_usuario'], $_GET['id_dispositivo']);
+        echo json_encode(["puede_editar" => $puede]);
+        return;
+    }
+
+    // ? Obtener todos con asignación
+    $datos = $this->modelo->obtenerTodosConAsignacion();
+    echo json_encode($datos);
+    break;            case 'POST':
                 $data = json_decode(file_get_contents("php://input"));
                 
                 if (!isset($data->imei, $data->estado_actual)) {
@@ -51,16 +60,25 @@ class DispositivoController {
                 break;
 
             case 'PUT':
-                $data = json_decode(file_get_contents("php://input"));
-                if (!isset($data->id_dispositivo, $data->imei, $data->estado_actual)) {
-                    http_response_code(400);
-                    echo json_encode(["success" => false, "message" => "Faltan datos"]);
-                    return;
-                }
-                $data->numero_celular = $data->numero_celular ?? null;
-                $ok = $this->modelo->actualizar($data);
-                echo json_encode(["success" => $ok, "message" => $ok ? "Dispositivo actualizado" : "Error al actualizar dispositivo"]);
-                break;
+   		 $data = file_get_contents("php://input");
+
+    		if (empty($data)) {
+       		 echo json_encode(["success" => false, "message" => "JSON vacío"]);
+        	return;
+    		}
+
+    		$data = json_decode($data);
+
+   		if (!isset($data->id_dispositivo, $data->imei, $data->estado_actual)) {
+        		http_response_code(400);
+        		echo json_encode(["success" => false, "message" => "Faltan datos"]);
+        		return;
+    		}
+
+    		$data->numero_celular = $data->numero_celular ?? null;
+    		$ok = $this->modelo->actualizar($data);
+    		echo json_encode(["success" => $ok, "message" => $ok ? "Dispositivo actualizado" : "Error al actualizar dispositivo"]);
+    		break;
 
             case 'DELETE':
     file_put_contents("log.txt", "?? Entrï¿½ al DELETE\n", FILE_APPEND);

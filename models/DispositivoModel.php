@@ -76,6 +76,20 @@ public function obtenerPorUsuario($idUsuario) {
 }
 
 
+public function obtenerDisponibles() {
+    $sql = "
+        SELECT d.*
+        FROM dispositivos d
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM asignaciones_animal_dispositivo a
+            WHERE a.id_dispositivo = d.id_dispositivo
+            AND a.fecha_fin IS NULL
+        )
+    ";
+    $result = $this->conn->query($sql);
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 public function usuarioPuedeEditar($idUsuario, $idDispositivo) {
     // ✅ Obtener el rol del usuario
     $stmt = $this->conn->prepare("SELECT rol FROM usuarios WHERE id_usuario = ?");
