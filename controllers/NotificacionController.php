@@ -15,7 +15,7 @@ class NotificacionController {
     public function manejarRequest($method) {
         if ($method !== 'POST') {
             http_response_code(405);
-            echo json_encode(["success" => false, "message" => "Método no permitido"]);
+            echo json_encode(["success" => false, "message" => "Mï¿½todo no permitido"]);
             return;
         }
 
@@ -51,35 +51,40 @@ class NotificacionController {
         $errores = [];
 
         foreach ($tokens as $token) {
-            try {
-                $client->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", [
-                    'headers' => [
-                        'Authorization' => "Bearer $accessToken",
-                        'Content-Type' => 'application/json',
-                    ],
-                    'json' => [
-                        'message' => [
-                            'token' => $token,
-                            'notification' => [
-                                'title' => $data->titulo,
-                                'body' => $data->mensaje
-                            ],
-                            'android' => [
-                                'priority' => 'high',
+                try {
+                    $client->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", [
+                        'headers' => [
+                            'Authorization' => "Bearer $accessToken",
+                            'Content-Type' => 'application/json',
+                        ],
+                        'json' => [
+                            'message' => [
+                                'token' => $token,
                                 'notification' => [
-				    'icon' => 'icnotificacion',
-                                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                                    'color' => '#FF0000',
-                                    'channel_id' => 'high_importance_channel'
+                                    'title' => $data->titulo,
+                                    'body' => $data->mensaje
+                                ],
+                                'data' => [
+                                    'id_dispositivo' => (string)$data->id_dispositivo,
+                                    'mensaje' => $data->mensaje,
+                                    'titulo' => $data->titulo
+                                ],
+                                'android' => [
+                                    'priority' => 'high',
+                                    'notification' => [
+                                        'icon' => 'icnotificacion',
+                                        'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                                        'color' => '#BBDEFB',
+                                        'channel_id' => 'high_importance_channel'
+                                    ]
                                 ]
                             ]
                         ]
-                    ]
-                ]);
-            } catch (Exception $e) {
-                $errores[] = $e->getMessage();
+                    ]);
+                } catch (Exception $e) {
+                    $errores[] = $e->getMessage();
+                }
             }
-        }
 
         echo json_encode([
             "success" => count($errores) === 0,

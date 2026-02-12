@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'tesis/geo-little-paws-api',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '13571c4ae0279d24b2f5c0c5ef87bcc9faaaf3c5',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -200,9 +200,9 @@
             'dev_requirement' => false,
         ),
         'tesis/geo-little-paws-api' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '13571c4ae0279d24b2f5c0c5ef87bcc9faaaf3c5',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

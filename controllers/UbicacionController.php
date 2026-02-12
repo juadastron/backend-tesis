@@ -40,14 +40,14 @@ class UbicacionController {
             http_response_code(405);
             echo json_encode([
                 "success" => false,
-                "message" => "Método no permitido"
+                "message" => "Metodo no permitido"
             ]);
             break;
             default:
                 http_response_code(405);
                 echo json_encode([
                     "success" => false,
-                    "message" => "Método no permitido"
+                    "message" => "Metodo no permitido"
                 ]);
                 break;
         }
